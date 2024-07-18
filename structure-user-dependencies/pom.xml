@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cn.structured</groupId>
+        <artifactId>structure-dependencies</artifactId>
+        <version>1.2.1.RELEASE</version>
+    </parent>
+
+    <artifactId>structure-user-dependencies</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <description>用户中心</description>
+
+    <properties>
+        <revision>1.0.1</revision>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aliyun.version>4.0.6</aliyun.version>
+        <aliyun.dysmsapi.version>1.1.0</aliyun.dysmsapi.version>
+        <hutool.version>5.1.0</hutool.version>
+        <structure.version>1.2.1.RELEASE</structure.version>
+        <structure-oauth.version>1.0.1</structure-oauth.version>
+        <structure-security.version>1.0.1</structure-security.version>
+    </properties>
+
+    <modules>
+        <module>../structure-user-core</module>
+        <module>../structure-user-api</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.structured</groupId>
+                <artifactId>structure-boot-parent</artifactId>
+                <version>${structure.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <!-- 阿里短信接口 -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+                <version>${aliyun.dysmsapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.structured</groupId>
+                <artifactId>structure-user-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.structured</groupId>
+                <artifactId>structure-user-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.structured</groupId>
+                <artifactId>structure-security-core</artifactId>
+                <version>${structure-security.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>structure-oauth-api</artifactId>
+                <groupId>cn.structured</groupId>
+                <version>${structure-oauth.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
