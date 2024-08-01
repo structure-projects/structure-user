@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(description = "下拉选-Dto")
-public class OptionDto {
+public class OptionDTO {
 
     @ApiModelProperty(value = "ID", example = "1645717015337684992")
     private Long id;
@@ -27,6 +27,6 @@ public class OptionDto {
     private String value;
 
     @ApiModelProperty(value = "子集", example = "[]")
-    private List<OptionDto> children;
+    private List<OptionDTO> children;
 
 }

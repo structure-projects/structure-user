@@ -9,7 +9,7 @@ mvn clean package -Dmaven.test.skip=true -Drevision=$version
 cd ../structure-user-cloud
 mvn clean package -Dmaven.test.skip=true -Drevision=$version
 cd ../
-sudo docker build -t registry.cn-hangzhou.aliyuncs.com/structured/structured-user-center:$version .
+docker build -t registry.cn-hangzhou.aliyuncs.com/structured/structured-user-center:$version .
 
 
 

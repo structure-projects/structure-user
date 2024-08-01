@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(description = "角色VO")
-public class RoleVo {
+public class RoleVO {
 
     @ApiModelProperty(value = "角色ID", example = "1645717015337684992")
     private Long id;

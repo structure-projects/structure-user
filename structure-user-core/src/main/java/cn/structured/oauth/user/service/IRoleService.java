@@ -1,7 +1,7 @@
 package cn.structured.oauth.user.service;
 
 import cn.structured.mybatis.plus.starter.base.IBaseService;
-import cn.structured.oauth.user.api.dto.role.BindingAuthorityDto;
+import cn.structured.oauth.user.api.dto.role.BindingAuthorityDTO;
 import cn.structured.oauth.user.entity.Role;
 
 import java.util.List;
@@ -41,5 +41,5 @@ public interface IRoleService extends IBaseService<Role> {
      *
      * @param bindingAuthorityDto 绑定权限DTO
      */
-    void saveRoleMenu(BindingAuthorityDto bindingAuthorityDto);
+    void saveRoleMenu(BindingAuthorityDTO bindingAuthorityDto);
 }

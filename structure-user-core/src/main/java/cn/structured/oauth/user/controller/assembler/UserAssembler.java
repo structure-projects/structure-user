@@ -1,6 +1,6 @@
 package cn.structured.oauth.user.controller.assembler;
 
-import cn.structured.oauth.user.api.dto.user.UserDetailDto;
+import cn.structured.oauth.user.api.dto.user.UserDetailDTO;
 import cn.structured.oauth.user.entity.User;
 import cn.structured.security.entity.StructureAuthUser;
 
@@ -20,8 +20,8 @@ public class UserAssembler {
 
     }
 
-    public static UserDetailDto assembler(User user) {
-        UserDetailDto userDetailDto = new UserDetailDto();
+    public static UserDetailDTO assembler(User user) {
+        UserDetailDTO userDetailDto = new UserDetailDTO();
         userDetailDto.setId(user.getId());
         userDetailDto.setUsername(user.getUsername());
         userDetailDto.setNickname(user.getNickName());

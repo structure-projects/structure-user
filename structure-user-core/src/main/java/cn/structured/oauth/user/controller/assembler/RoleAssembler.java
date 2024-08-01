@@ -1,8 +1,8 @@
 package cn.structured.oauth.user.controller.assembler;
 
-import cn.structured.oauth.user.api.dto.OptionDto;
-import cn.structured.oauth.user.api.dto.role.RoleDto;
-import cn.structured.oauth.user.api.vo.RoleVo;
+import cn.structured.oauth.user.api.dto.OptionDTO;
+import cn.structured.oauth.user.api.dto.role.RoleDTO;
+import cn.structured.oauth.user.api.vo.RoleVO;
 import cn.structured.oauth.user.entity.Role;
 
 /**
@@ -23,7 +23,7 @@ public class RoleAssembler {
      * @param roleDto 创建角色
      * @return 角色实体对象
      */
-    public static Role assembler(RoleDto roleDto) {
+    public static Role assembler(RoleDTO roleDto) {
         Role role = new Role();
         role.setName(roleDto.getName());
         role.setDataScope(roleDto.getDataScope());
@@ -39,8 +39,8 @@ public class RoleAssembler {
      * @param role 角色实体
      * @return 返回角色VO对象
      */
-    public static RoleVo assembler(Role role) {
-        RoleVo roleVo = new RoleVo();
+    public static RoleVO assembler(Role role) {
+        RoleVO roleVo = new RoleVO();
         roleVo.setId(role.getId());
         roleVo.setDataScope(role.getDataScope());
         roleVo.setName(role.getName());
@@ -55,10 +55,10 @@ public class RoleAssembler {
      * 角色装配成下拉选择VO对象
      *
      * @param role 角色
-     * @return {@link OptionDto}
+     * @return {@link OptionDTO}
      */
-    public static OptionDto assemblerOption(Role role) {
-        OptionDto option = new OptionDto();
+    public static OptionDTO assemblerOption(Role role) {
+        OptionDTO option = new OptionDTO();
         option.setId(role.getId());
         option.setLabel(role.getName());
         option.setValue(role.getCode());

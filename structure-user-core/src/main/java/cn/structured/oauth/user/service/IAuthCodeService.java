@@ -1,7 +1,7 @@
 package cn.structured.oauth.user.service;
 
-import cn.structured.oauth.user.api.dto.user.SendEmailCodeDto;
-import cn.structured.oauth.user.api.dto.user.SendSmsCodeDto;
+import cn.structured.oauth.user.api.dto.user.SendEmailCodeDTO;
+import cn.structured.oauth.user.api.dto.user.SendSmsCodeDTO;
 
 /**
  * Code服务类
@@ -16,13 +16,13 @@ public interface IAuthCodeService {
      *
      * @param sendSmsCodeDto 发送短信DTO
      */
-    void sendSmsCode(SendSmsCodeDto sendSmsCodeDto);
+    void sendSmsCode(SendSmsCodeDTO sendSmsCodeDto);
 
     /**
      * 发送邮箱验证码
      *
      * @param sendEmailCodeDto 邮箱DTO
      */
-    void sendEmailCode(SendEmailCodeDto sendEmailCodeDto);
+    void sendEmailCode(SendEmailCodeDTO sendEmailCodeDto);
 
 }

@@ -4,10 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.structure.common.entity.ResResultVO;
 import cn.structure.common.utils.ResultUtilSimpleImpl;
 import cn.structured.mybatis.plus.starter.vo.ResPage;
-import cn.structured.oauth.user.api.dto.OptionDto;
-import cn.structured.oauth.user.api.dto.role.BindingAuthorityDto;
-import cn.structured.oauth.user.api.dto.role.RoleDto;
-import cn.structured.oauth.user.api.vo.RoleVo;
+import cn.structured.oauth.user.api.dto.OptionDTO;
+import cn.structured.oauth.user.api.dto.role.BindingAuthorityDTO;
+import cn.structured.oauth.user.api.dto.role.RoleDTO;
+import cn.structured.oauth.user.api.vo.RoleVO;
 import cn.structured.oauth.user.controller.assembler.RoleAssembler;
 import cn.structured.oauth.user.entity.Role;
 import cn.structured.oauth.user.service.IRoleService;
@@ -42,7 +42,7 @@ public class RoleController {
 
     @ApiOperation(value = "新增角色")
     @PostMapping(value = "/")
-    public ResResultVO<Long> add(@RequestBody @Validated RoleDto roleDto) {
+    public ResResultVO<Long> add(@RequestBody @Validated RoleDTO roleDto) {
         Role role = RoleAssembler.assembler(roleDto);
         roleService.save(role);
         return ResultUtilSimpleImpl.success(role.getId());
@@ -50,7 +50,7 @@ public class RoleController {
 
     @ApiOperation(value = "修改角色")
     @PutMapping(value = "/{roleId}")
-    public ResResultVO<Void> update(@RequestBody @Validated RoleDto roleDto,
+    public ResResultVO<Void> update(@RequestBody @Validated RoleDTO roleDto,
                                     @ApiParam(value = "角色ID", example = "1645717015337684992")
                                     @PathVariable Long roleId) {
         Role role = RoleAssembler.assembler(roleDto);
@@ -61,7 +61,7 @@ public class RoleController {
 
     @ApiOperation(value = "角色列表")
     @GetMapping(value = "/{page}/{pageSize}/page")
-    public ResResultVO<ResPage<RoleVo>> page(@ApiParam(value = "页码", required = true, example = "1")
+    public ResResultVO<ResPage<RoleVO>> page(@ApiParam(value = "页码", required = true, example = "1")
                                              @PathVariable("page") Long page,
                                              @ApiParam(value = "页大小", required = true, example = "20")
                                              @PathVariable("pageSize") Long pageSize,
@@ -82,17 +82,17 @@ public class RoleController {
 
     @ApiOperation(value = "绑定权限")
     @PostMapping(value = "/bindAuthorities")
-    public ResResultVO<Void> update(@RequestBody @Validated BindingAuthorityDto bindingAuthorityDto) {
+    public ResResultVO<Void> update(@RequestBody @Validated BindingAuthorityDTO bindingAuthorityDto) {
         roleService.saveRoleMenu(bindingAuthorityDto);
         return ResultUtilSimpleImpl.success(null);
     }
 
     @ApiOperation(value = "角色详情")
     @GetMapping(value = "/{roleId}")
-    public ResResultVO<RoleVo> get(@ApiParam(value = "角色ID", example = "1645717015337684992")
+    public ResResultVO<RoleVO> get(@ApiParam(value = "角色ID", example = "1645717015337684992")
                                    @PathVariable("roleId") Long roleId) {
         Role role = roleService.getById(roleId);
-        RoleVo resultRole = RoleAssembler.assembler(role);
+        RoleVO resultRole = RoleAssembler.assembler(role);
         List<String> authorities = roleService.getAuthorities(roleId);
         resultRole.setAuthorities(authorities);
         return ResultUtilSimpleImpl.success(resultRole);
@@ -124,7 +124,7 @@ public class RoleController {
 
     @ApiOperation(value = "角色列表")
     @GetMapping(value = "/options")
-    public ResResultVO<List<OptionDto>> option(@ApiParam(value = "关键字", example = "name")
+    public ResResultVO<List<OptionDTO>> option(@ApiParam(value = "关键字", example = "name")
                                                @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
         LambdaQueryWrapper<Role> queryWrapper = Wrappers.<Role>lambdaQuery()
                 .like(StrUtil.isNotBlank(keyword), Role::getName, "%" + keyword + "%")

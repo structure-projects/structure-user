@@ -5,3 +5,7 @@ spring:
     active: dev
   application:
     name: user-center
+management:
+  endpoint:
+    health:
+      show-details: always

@@ -5,8 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.structure.common.exception.CommonException;
 import cn.structured.mybatis.plus.starter.base.BaseServiceImpl;
 import cn.structured.oauth.api.enums.PlatformCodeEnum;
-import cn.structured.oauth.user.api.dto.OptionDto;
+import cn.structured.oauth.user.api.dto.OptionDTO;
 import cn.structured.oauth.user.api.dto.user.*;
+import cn.structured.oauth.user.api.enums.UserExceptionEnum;
 import cn.structured.oauth.user.controller.assembler.UserAssembler;
 import cn.structured.oauth.user.entity.*;
 import cn.structured.oauth.user.mapper.*;
@@ -70,7 +71,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
                 .eq(UserBind::getPlatformUserId, platformUserId)
                 .select(UserBind::getPlatformUserId, UserBind::getUserId));
         if (null == oauthUserBind) {
-            throw new CommonException("", "用户不存在！");
+            throw new CommonException(UserExceptionEnum.NOT_USER_ERROR.getCode(), UserExceptionEnum.NOT_USER_ERROR.getMessage());
         }
         //查询用户信息
         User user = userMapper.selectById(oauthUserBind.getUserId());
@@ -93,6 +94,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         user.setEnabled(Boolean.TRUE);
         user.setUnlocked(Boolean.TRUE);
         user.setDeleted(Boolean.FALSE);
+        user.setPhone(registerUserDto.getPhone());
+        user.setEmail(registerUserDto.getEmail());
         String type = registerUserDto.getType();
         userMapper.insert(user);
         if (StrUtil.isNotBlank(type)) {
@@ -102,12 +105,16 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             oauthUserBind.setPlatformCode(registerUserDto.getType());
             //手机号注册
             if (PlatformCodeEnum.PHONE.getCode().equals(type)) {
-                oauthUserBind.setPlatformUserId(registerUserDto.getPhone());
+                String phone = registerUserDto.getPhone();
+                //todo 验证手机号
+                oauthUserBind.setPlatformUserId(phone);
                 userBindMapper.insert(oauthUserBind);
             }
             //邮箱注册
             if (PlatformCodeEnum.EMAIL.getCode().equals(type)) {
-                oauthUserBind.setPlatformUserId(registerUserDto.getEmail());
+                String email = registerUserDto.getEmail();
+                //todo 验证邮箱
+                oauthUserBind.setPlatformUserId(email);
                 userBindMapper.insert(oauthUserBind);
             }
         }
@@ -121,16 +128,16 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
      */
     private void checkUser(User user) {
         if (null == user) {
-            throw new CommonException("", "用户不存在！");
+            throw new CommonException(UserExceptionEnum.NOT_USER_ERROR.getCode(), UserExceptionEnum.NOT_USER_ERROR.getMessage());
         }
         if (!user.getUnexpired()) {
-            throw new CommonException("", "用户已过期！");
+            throw new CommonException(UserExceptionEnum.USER_EXPIRE_ERROR.getCode(), UserExceptionEnum.USER_EXPIRE_ERROR.getMessage());
         }
         if (!user.getUnlocked()) {
-            throw new CommonException("", "用户已锁定！");
+            throw new CommonException(UserExceptionEnum.USER_LOCK_ERROR.getCode(), UserExceptionEnum.USER_LOCK_ERROR.getMessage());
         }
         if (!user.getEnabled()) {
-            throw new CommonException("", "用户未启用！");
+            throw new CommonException(UserExceptionEnum.USER_NOT_ENABLE.getCode(), UserExceptionEnum.USER_NOT_ENABLE.getMessage());
         }
     }
 
@@ -145,8 +152,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         //验证密码是否正确
         if (!matches) {
-            //todo 密码验证失败后提示错误信息！
-            throw new CommonException();
+            //密码验证失败后提示错误信息！
+            throw new CommonException(UserExceptionEnum.USER_PASSWORD_ERROR.getCode(),UserExceptionEnum.USER_PASSWORD_ERROR.getMessage());
         }
         //调用重置密码方法重置密码
         resetPassword(userId, newPassword);
@@ -194,7 +201,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public void bindingPlatformUser(BindingPlatformUserIdDto bindingPlatformUserIdDto) {
+    public void bindingPlatformUser(BindingPlatformUserIdDTO bindingPlatformUserIdDto) {
         UserBind oauthUserBind = new UserBind();
         oauthUserBind.setUserId(bindingPlatformUserIdDto.getUserId());
         oauthUserBind.setPlatformUserId(bindingPlatformUserIdDto.getPlatformUserId());
@@ -204,7 +211,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long registerPlatformUser(RegisterPlatformUserDto registerPlatformUserDto) {
+    public Long registerPlatformUser(RegisterPlatformUserDTO registerPlatformUserDto) {
         User user = new User();
         user.setNickName(registerPlatformUserDto.getNickname());
         user.setUsername(registerPlatformUserDto.getPlatformUserId());
@@ -226,12 +233,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public UserInfoDto currentUserInfo() {
+    public UserInfoDTO currentUserInfo() {
         //获取当前用户ID
         Long userId = SecurityUtils.getUserId();
         //查询当前用户信息
         User user = baseMapper.selectById(userId);
-        UserInfoDto userInfoDto = new UserInfoDto();
+        UserInfoDTO userInfoDto = new UserInfoDTO();
         userInfoDto.setId(user.getId());
         userInfoDto.setUsername(user.getUsername());
         userInfoDto.setNickname(user.getNickName());
@@ -334,11 +341,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public UserDetailDto getUserDetailByUserId(Long userId) {
+    public UserDetailDTO getUserDetailByUserId(Long userId) {
         User user = this.getById(userId);
         List<Role> userRole = this.getUserRole(userId);
-        List<OptionDto> roleList = userRole.stream().map(role -> {
-                            OptionDto option = new OptionDto();
+        List<OptionDTO> roleList = userRole.stream().map(role -> {
+                            OptionDTO option = new OptionDTO();
                             option.setId(role.getId());
                             option.setValue(role.getCode());
                             option.setLabel(role.getName());
@@ -346,7 +353,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
                         }
                 )
                 .collect(Collectors.toList());
-        UserDetailDto userDetail = UserAssembler.assembler(user);
+        UserDetailDTO userDetail = UserAssembler.assembler(user);
         userDetail.setRole(roleList);
         return userDetail;
     }

@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(description = "绑定权限 - DTO")
-public class BindingAuthorityDto {
+public class BindingAuthorityDTO {
 
     @NotNull
     @ApiModelProperty(value = "角色ID", example = "1645717015337684992", required = true)

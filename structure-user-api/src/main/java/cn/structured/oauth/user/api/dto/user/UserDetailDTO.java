@@ -1,6 +1,7 @@
 package cn.structured.oauth.user.api.dto.user;
 
-import cn.structured.oauth.user.api.dto.OptionDto;
+import cn.structured.oauth.user.api.dto.OptionDTO;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,7 +15,8 @@ import java.util.List;
  * @since JDK1.8
  */
 @Data
-public class UserDetailDto {
+@ApiModel(description = "用户详情-DTO")
+public class UserDetailDTO {
 
     @ApiModelProperty(value = "用户ID")
     private Long id;
@@ -41,7 +43,7 @@ public class UserDetailDto {
     private String email;
 
     @ApiModelProperty(value = "角色名称")
-    private List<OptionDto> role;
+    private List<OptionDTO> role;
 
     @ApiModelProperty(value = "注册时间")
     private LocalDateTime createTime;

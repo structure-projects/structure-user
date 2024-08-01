@@ -2,8 +2,8 @@ package cn.structured.oauth.user.controller.web;
 
 import cn.structure.common.entity.ResResultVO;
 import cn.structure.common.utils.ResultUtilSimpleImpl;
-import cn.structured.oauth.user.api.dto.TagDto;
-import cn.structured.oauth.user.api.dto.role.RoleDto;
+import cn.structured.oauth.user.api.dto.TagDTO;
+import cn.structured.oauth.user.api.dto.role.RoleDTO;
 import cn.structured.oauth.user.entity.UserTag;
 import cn.structured.oauth.user.service.IUserTagService;
 import cn.structured.security.util.SecurityUtils;
@@ -33,7 +33,7 @@ public class UserTagController {
 
     @ApiOperation(value = "新增用户标签")
     @PostMapping(value = "/")
-    public ResResultVO<Long> add(@RequestBody @Validated TagDto tagDto) {
+    public ResResultVO<Long> add(@RequestBody @Validated TagDTO tagDto) {
         Long userId = SecurityUtils.getUserId();
         UserTag userTag = new UserTag();
         userTag.setUserId(userId);
@@ -44,7 +44,7 @@ public class UserTagController {
 
     @ApiOperation(value = "删除用户标签")
     @DeleteMapping(value = "/{tagId}")
-    public ResResultVO<Void> userDelete(@RequestBody @Validated RoleDto roleDto,
+    public ResResultVO<Void> userDelete(@RequestBody @Validated RoleDTO roleDto,
                                         @ApiParam(value = "标签ID", example = "1645717015337684992")
                                         @PathVariable Long tagId) {
         Long userId = SecurityUtils.getUserId();
@@ -56,12 +56,12 @@ public class UserTagController {
 
     @ApiOperation(value = "获取用户标签")
     @GetMapping(value = "/get")
-    public ResResultVO<List<TagDto>> getUserTag() {
+    public ResResultVO<List<TagDTO>> getUserTag() {
         Long userId = SecurityUtils.getUserId();
         List<UserTag> list = userTagService.list(Wrappers.<UserTag>lambdaQuery()
                 .eq(UserTag::getUserId, userId));
         return ResultUtilSimpleImpl.success(list.stream().map(userTag -> {
-            TagDto tagDto = new TagDto();
+            TagDTO tagDto = new TagDTO();
             tagDto.setId(userTag.getId());
             tagDto.setTag(userTag.getTag());
             return tagDto;

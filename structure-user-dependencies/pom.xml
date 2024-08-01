@@ -7,7 +7,7 @@
     <parent>
         <groupId>cn.structured</groupId>
         <artifactId>structure-dependencies</artifactId>
-        <version>1.2.1.RELEASE</version>
+        <version>1.2.2</version>
     </parent>
 
     <artifactId>structure-user-dependencies</artifactId>
@@ -16,7 +16,7 @@
     <description>用户中心</description>
 
     <properties>
-        <revision>1.0.1</revision>
+        <revision>1.0.2</revision>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -68,6 +68,7 @@
                 <artifactId>structure-user-api</artifactId>
                 <version>${revision}</version>
             </dependency>
+
             <dependency>
                 <groupId>cn.structured</groupId>
                 <artifactId>structure-security-core</artifactId>
@@ -76,6 +77,11 @@
             <dependency>
                 <artifactId>structure-oauth-api</artifactId>
                 <groupId>cn.structured</groupId>
+                <version>${structure-oauth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.structured</groupId>
+                <artifactId>structure-oauth-sdk</artifactId>
                 <version>${structure-oauth.version}</version>
             </dependency>
         </dependencies>

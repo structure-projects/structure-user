@@ -45,8 +45,16 @@ structure:
           - /webjars/**
           - /swagger-resources/**
           - /v2/api-docs/**
-          - /web-api/auth-code/**
+          - /api/auth-code/**
           - /open-api/**
+          - /api/users/userResetPassword
+          - /api/users/register
+    client:
+      client-id: c1
+      client-secret: secret
+      host: 127.0.0.1
+      port: 18002
+      scheme: http
   user:
     sms-login-template-code: ss
     sms-register-template-code: ss

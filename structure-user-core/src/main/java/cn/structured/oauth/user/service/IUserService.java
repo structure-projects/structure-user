@@ -93,7 +93,7 @@ public interface IUserService extends IBaseService<User> {
      *
      * @param bindingPlatformUserIdDto 绑定平台用户
      */
-    void bindingPlatformUser(BindingPlatformUserIdDto bindingPlatformUserIdDto);
+    void bindingPlatformUser(BindingPlatformUserIdDTO bindingPlatformUserIdDto);
 
     /**
      * 注册平台用户
@@ -101,14 +101,14 @@ public interface IUserService extends IBaseService<User> {
      * @param registerPlatformUserDto 平台用户DTO
      * @return 用户ID {@link Long}
      */
-    Long registerPlatformUser(RegisterPlatformUserDto registerPlatformUserDto);
+    Long registerPlatformUser(RegisterPlatformUserDTO registerPlatformUserDto);
 
     /**
      * 查询当前登录的用户信息
      *
      * @return userInfo
      */
-    UserInfoDto currentUserInfo();
+    UserInfoDTO currentUserInfo();
 
 
     /**
@@ -141,6 +141,6 @@ public interface IUserService extends IBaseService<User> {
      * @param userId 用户ID
      * @return
      */
-    UserDetailDto getUserDetailByUserId(Long userId);
+    UserDetailDTO getUserDetailByUserId(Long userId);
 
 }

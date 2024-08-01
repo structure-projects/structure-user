@@ -90,10 +90,11 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.github.xiaoymin</groupId>-->
-<!--            <artifactId>swagger-bootstrap-ui</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.xiaoymin</groupId>-->
+        <!--            <artifactId>swagger-bootstrap-ui</artifactId>-->
+        <!--        </dependency>-->
+
         <dependency>
             <groupId>cn.structured</groupId>
             <artifactId>structure-security-core</artifactId>

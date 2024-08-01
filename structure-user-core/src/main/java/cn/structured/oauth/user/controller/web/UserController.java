@@ -2,14 +2,15 @@ package cn.structured.oauth.user.controller.web;
 
 import cn.structure.common.constant.SymbolConstant;
 import cn.structure.common.entity.ResResultVO;
-import cn.structure.common.exception.CommonException;
 import cn.structure.common.utils.ResultUtilSimpleImpl;
 import cn.structured.oauth.api.enums.PlatformCodeEnum;
 import cn.structured.oauth.api.enums.VerificationCodeType;
 import cn.structured.oauth.user.api.dto.user.*;
+import cn.structured.oauth.user.api.enums.UserExceptionEnum;
 import cn.structured.oauth.user.entity.User;
 import cn.structured.oauth.user.service.IUserService;
 import cn.structured.security.util.SecurityUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -39,9 +41,10 @@ public class UserController {
 
 
     @ApiOperation(value = "删除用户", notes = "管理接口")
-    @DeleteMapping(value = "/{userId}")
-    public ResResultVO<Void> remove(@ApiParam(value = "用户ID", example = "1645717015337684992") @PathVariable Long userId) {
-        userService.removeById(userId);
+    @DeleteMapping(value = "/{ids}")
+    public ResResultVO<Void> remove(@ApiParam(value = "用户ID", example = "1645717015337684992")
+                                    @PathVariable List<Long> ids) {
+        userService.removeByIds(ids);
         return ResultUtilSimpleImpl.success(null);
     }
 
@@ -79,36 +82,42 @@ public class UserController {
 
     @ApiOperation(value = "重置密码", notes = "管理接口")
     @PutMapping(value = "/resetPassword")
-    public ResResultVO<Void> resetPassword(@RequestBody @Validated RestPasswordDto resetPassword) {
+    public ResResultVO<Void> resetPassword(@RequestBody @Validated RestPasswordDTO resetPassword) {
         userService.resetPassword(resetPassword.getUserId(), resetPassword.getPassword());
         return ResultUtilSimpleImpl.success(null);
     }
 
     @ApiOperation(value = "查询当前登录用户详情", notes = "全局有权限即可")
     @GetMapping(value = "/current")
-    public ResResultVO<UserInfoDto> current() {
+    public ResResultVO<UserInfoDTO> current() {
         return ResultUtilSimpleImpl.success(userService.currentUserInfo());
     }
 
 
     @ApiOperation(value = "通过用户ID查询用户详情")
     @GetMapping(value = "/get/{userId}")
-    public ResResultVO<UserDetailDto> get(@ApiParam(value = "用户ID", example = "1645717015337684992")
+    public ResResultVO<UserDetailDTO> get(@ApiParam(value = "用户ID", example = "1645717015337684992")
                                           @PathVariable("userId") Long userId) {
         return ResultUtilSimpleImpl.success(userService.getUserDetailByUserId(userId));
     }
 
-
     @ApiOperation(value = "用户注册")
     @PostMapping(value = "/register")
     public ResResultVO<Long> register(@RequestBody @Validated RegisterUserDto registerUserDto) {
+        String code = registerUserDto.getCode();
+        String redisKey = PlatformCodeEnum.PHONE.getCode() + SymbolConstant.COLON + VerificationCodeType.REGISTER.getCode() + SymbolConstant.COLON + registerUserDto.getPhone();
+        String cacheCode = redisTemplate.boundValueOps(redisKey).get();
+        if (!code.equals(cacheCode)) {
+            //验证失败
+            return ResultUtilSimpleImpl.fail(UserExceptionEnum.CODE_ERROR.getCode(), UserExceptionEnum.CODE_ERROR.getMessage(), null);
+        }
         Long userId = userService.registerUser(registerUserDto);
         return ResultUtilSimpleImpl.success(userId);
     }
 
     @ApiOperation(value = "变更当前用户信息", notes = "个人接口")
     @PutMapping(value = "/changeCurrent")
-    public ResResultVO<Void> change(@RequestBody @Validated ChangeCurrentUserDto changeUserDto) {
+    public ResResultVO<Void> change(@RequestBody @Validated ChangeCurrentUserDTO changeUserDto) {
         Long userId = SecurityUtils.getUserId();
         User oauthUser = new User();
         oauthUser.setId(userId);
@@ -124,14 +133,14 @@ public class UserController {
 
     @ApiOperation(value = "绑定平台用户ID", notes = "个人权限接口需要知道用户的ID")
     @PostMapping(value = "bindingPlatformUser")
-    public ResResultVO<Void> bindingPlatformUser(@RequestBody @Validated BindingPlatformUserIdDto bindingPlatformUserIdDto) {
+    public ResResultVO<Void> bindingPlatformUser(@RequestBody @Validated BindingPlatformUserIdDTO bindingPlatformUserIdDto) {
         userService.bindingPlatformUser(bindingPlatformUserIdDto);
         return ResultUtilSimpleImpl.success(null);
     }
 
     @ApiOperation(value = "修改密码", notes = "个人操作，管理员需要知道用户的密码不建议调用")
     @PostMapping(value = "/changePassword")
-    public ResResultVO<Void> changePassword(@RequestBody ChangePasswordDto changePassword) {
+    public ResResultVO<Void> changePassword(@RequestBody ChangePasswordDTO changePassword) {
         // token中获取用户ID
         Long userId = SecurityUtils.getUserId();
         userId = (null != userId) ? userId : changePassword.getUserId();
@@ -141,24 +150,33 @@ public class UserController {
 
     @ApiOperation(value = "用户重置密码")
     @PutMapping(value = "/userResetPassword")
-    public ResResultVO<Void> userResetPassword(@RequestBody @Validated UserRestPasswordDto resetPassword) {
+    public ResResultVO<Void> userResetPassword(@RequestBody @Validated UserRestPasswordDTO resetPassword) {
         String code = resetPassword.getCode();
         String redisKey = PlatformCodeEnum.PHONE.getCode() + SymbolConstant.COLON + VerificationCodeType.RESET_PASSWORD.getCode() + SymbolConstant.COLON + resetPassword.getPhone();
         String cacheCode = redisTemplate.boundValueOps(redisKey).get();
-        if (code.equals(cacheCode)) {
-            //todo 验证失败
-            throw new CommonException("", "");
+        if (!code.equals(cacheCode)) {
+            //验证失败
+            return ResultUtilSimpleImpl.fail(UserExceptionEnum.CODE_ERROR.getCode(), UserExceptionEnum.CODE_ERROR.getMessage(), null);
         }
+        User user = userService.getOne(Wrappers.<User>lambdaQuery()
+                .eq(User::getPhone, resetPassword.getPhone())
+                .select(User::getId, User::getPhone));
         //验证code
-        userService.resetPassword(resetPassword.getId(), resetPassword.getPassword());
+        userService.resetPassword(user.getId(), resetPassword.getPassword());
         return ResultUtilSimpleImpl.success(null);
     }
 
-
     @ApiOperation(value = "查询用户详情", notes = "全局有权限即可")
     @GetMapping(value = "/currentUserDetail")
-    public ResResultVO<UserDetailDto> currentUserDetail() {
+    public ResResultVO<UserDetailDTO> currentUserDetail() {
         Long userId = SecurityUtils.getUserId();
         return ResultUtilSimpleImpl.success(userService.getUserDetailByUserId(userId));
+    }
+
+    @ApiOperation(value = "分配角色")
+    @PutMapping(value = "/assigningRole}")
+    public ResResultVO<Void> assigningRole(@RequestBody @Validated AssigningRoleDTO assigningRoleDto) {
+        userService.assigningRole(assigningRoleDto.getRoleIds(), assigningRoleDto.getUserId());
+        return ResultUtilSimpleImpl.success(null);
     }
 }

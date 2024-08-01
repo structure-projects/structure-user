@@ -19,7 +19,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <revision>1.0.1</revision>
+        <revision>1.0.2</revision>
         <structure.version>1.2.1.RELEASE</structure.version>
         <structure-oauth.version>1.0.1</structure-oauth.version>
         <structure-cloud.version>1.0.1</structure-cloud.version>
@@ -82,6 +82,20 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>swagger-bootstrap-ui</artifactId>
         </dependency>
+        <!--远程调用-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--负载均衡-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -96,7 +110,7 @@
             <dependency>
                 <groupId>cn.structured</groupId>
                 <artifactId>structure-user-dependencies</artifactId>
-                <version>${structure.version}</version>
+                <version>${revision}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

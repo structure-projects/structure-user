@@ -5,8 +5,9 @@ import cn.structure.common.constant.SymbolConstant;
 import cn.structure.common.exception.CommonException;
 import cn.structured.oauth.api.enums.PlatformCodeEnum;
 import cn.structured.oauth.api.enums.VerificationCodeType;
-import cn.structured.oauth.user.api.dto.user.SendEmailCodeDto;
-import cn.structured.oauth.user.api.dto.user.SendSmsCodeDto;
+import cn.structured.oauth.user.api.dto.user.SendEmailCodeDTO;
+import cn.structured.oauth.user.api.dto.user.SendSmsCodeDTO;
+import cn.structured.oauth.user.api.enums.UserExceptionEnum;
 import cn.structured.oauth.user.configuration.SmsConfig;
 import cn.structured.oauth.user.configuration.UserProperties;
 import cn.structured.oauth.user.service.IAuthCodeService;
@@ -15,6 +16,7 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -48,16 +50,25 @@ public class AuthCodeServiceImpl implements IAuthCodeService {
     @Resource
     private JavaMailSender javaMailSender;
 
+    @Value("${spring.profiles.active}")
+    private String profile;
+
     @Override
-    public void sendSmsCode(SendSmsCodeDto sendSmsCodeDto) {
-        IAcsClient acsClient = SpringUtil.getBean(IAcsClient.class);
-        if (null == acsClient) {
-            //todo 抛出异常
-            throw new CommonException("", "");
-        }
+    public void sendSmsCode(SendSmsCodeDTO sendSmsCodeDto) {
         String phone = sendSmsCodeDto.getPhone();
         //生成验证码
         String verificationCode = generateVerificationCode();
+        if ("dev".equals(profile)) {
+            //将验证码存储到redis中
+            String redisKey = PlatformCodeEnum.PHONE.getCode() + SymbolConstant.COLON + sendSmsCodeDto.getCodeType().getCode() + SymbolConstant.COLON + phone;
+            redisTemplate.boundValueOps(redisKey).set("123456", 5, TimeUnit.MINUTES);
+            return;
+        }
+        IAcsClient acsClient = SpringUtil.getBean(IAcsClient.class);
+        if (null == acsClient) {
+            //抛出异常
+            throw new CommonException(UserExceptionEnum.SMS_SERVER_ERROR.getCode(), UserExceptionEnum.SMS_SERVER_ERROR.getMessage());
+        }
         //组装请求对象-具体描述见控制台-文档部分内容
         SendSmsRequest request = new SendSmsRequest();
         //必填:待发送手机号
@@ -80,14 +91,14 @@ public class AuthCodeServiceImpl implements IAuthCodeService {
                 redisTemplate.boundValueOps(redisKey).set(verificationCode, 5, TimeUnit.MINUTES);
             }
         } catch (ClientException e) {
-            log.error(e.getMessage());
-            //todo 添加错误信息
-            throw new CommonException("", "");
+            log.error("sms service send error -> {}", e.getMessage());
+            //短信服务发送异常错误信息
+            throw new CommonException(UserExceptionEnum.SMS_SERVER_SEND_ERROR.getCode(), UserExceptionEnum.SMS_SERVER_SEND_ERROR.getMessage());
         }
     }
 
     @Override
-    public void sendEmailCode(SendEmailCodeDto sendEmailCodeDto) {
+    public void sendEmailCode(SendEmailCodeDTO sendEmailCodeDto) {
         //验证码类型
         VerificationCodeType codeType = sendEmailCodeDto.getCodeType();
         String email = sendEmailCodeDto.getEmail();
@@ -103,11 +114,11 @@ public class AuthCodeServiceImpl implements IAuthCodeService {
             mimeMessageHelper.setText(String.format(codeType.getText(), verificationCode));
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error("send mail fail -> {}", e.getMessage());
+            throw new CommonException(UserExceptionEnum.EMAIL_SEND_ERROR.getCode(), UserExceptionEnum.EMAIL_SEND_ERROR.getMessage());
         }
         String redisKey = PlatformCodeEnum.EMAIL.getCode() + SymbolConstant.COLON + sendEmailCodeDto.getCodeType().getCode() + SymbolConstant.COLON + email;
         redisTemplate.boundValueOps(redisKey).set(verificationCode, 5, TimeUnit.MINUTES);
-//        }
     }
 
     /**

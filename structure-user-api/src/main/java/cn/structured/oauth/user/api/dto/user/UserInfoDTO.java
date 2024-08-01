@@ -1,5 +1,6 @@
 package cn.structured.oauth.user.api.dto.user;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -12,7 +13,8 @@ import java.util.List;
  * @since JDK1.8
  */
 @Data
-public class UserInfoDto {
+@ApiModel(description = "用户信息-DTO")
+public class UserInfoDTO {
 
     @ApiModelProperty(value = "用户ID")
     private Long id;

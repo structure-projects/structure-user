@@ -19,7 +19,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <revision>1.0.1</revision>
+        <revision>1.0.2</revision>
         <structure.version>1.2.1.RELEASE</structure.version>
         <structure-oauth.version>1.0.1</structure-oauth.version>
     </properties>
@@ -65,7 +65,10 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>swagger-bootstrap-ui</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -73,7 +76,7 @@
             <dependency>
                 <groupId>cn.structured</groupId>
                 <artifactId>structure-user-dependencies</artifactId>
-                <version>${structure.version}</version>
+                <version>${revision}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

@@ -1,5 +1,6 @@
 package cn.structured.oauth.user.api.dto.user;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,7 +11,8 @@ import lombok.Data;
  * @since JDK1.8
  */
 @Data
-public class ChangeCurrentUserDto {
+@ApiModel(description = "变更用户-DTO")
+public class ChangeCurrentUserDTO {
 
     @ApiModelProperty(value = "昵称")
     private String nickname;

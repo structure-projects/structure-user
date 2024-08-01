@@ -11,10 +11,10 @@ spring:
       discovery:
         namespace: 5a4e4c1f-beda-4ae5-a3d7-428950e7473b
         metadata:
-          version: ${revision} # 服务实例的版本号，可用于灰度发布
+          version: 1.0.1 # 服务实例的版本号，可用于灰度发布
         group: ${spring.profiles.active}
       config:
-        server-addr:  ${nacos-server}
+        server-addr: ${nacos-server}
         namespace: 5a4e4c1f-beda-4ae5-a3d7-428950e7473b
         group: ${spring.profiles.active}
         name: ${spring.application.name}

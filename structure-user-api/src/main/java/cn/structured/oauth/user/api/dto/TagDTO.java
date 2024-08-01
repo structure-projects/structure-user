@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(description = "标签DTO")
-public class TagDto {
+public class TagDTO {
 
     @ApiModelProperty(value = "标签ID")
     private Long id;

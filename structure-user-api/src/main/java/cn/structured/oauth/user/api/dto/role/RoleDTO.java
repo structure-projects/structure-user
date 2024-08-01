@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(description = "创建角色")
-public class RoleDto {
+public class RoleDTO {
 
     @ApiModelProperty(value = "角色名称", example = "管理员")
     private String name;
