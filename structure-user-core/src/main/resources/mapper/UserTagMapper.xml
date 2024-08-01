@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.structured.oauth.user.mapper.UserTagMapper">
+<mapper namespace="cn.structured.user.mapper.UserTagMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.structured.oauth.user.entity.UserTag">
+    <resultMap id="BaseResultMap" type="cn.structured.user.entity.UserTag">
         <id column="id" property="id"/>
         <result column="tag" property="tag"/>
         <result column="user_id" property="userId"/>

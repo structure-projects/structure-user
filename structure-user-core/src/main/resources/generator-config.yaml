@@ -24,10 +24,10 @@ packageConfig:
   xml: mapper
   controller: controller
   pathInfo:
-    entity_path: ./src/main/java/cn/structured/oauth/user/entity
+    entity_path: ./src/main/java/cn/structured/user/entity
     #service_path: ./src/main/java/cn/structured/oauth/server/service
     #service_impl_path: ./src/main/java/cn/structured/oauth/server/service/impl
-    mapper_path: ./src/main/java/cn/structured/oauth/user/mapper
+    mapper_path: ./src/main/java/cn/structured/user/mapper
     xml_path: ./src/main/resources/mapper
 strategyConfig:
   naming: underline_to_camel
