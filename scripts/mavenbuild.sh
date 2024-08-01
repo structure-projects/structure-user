@@ -1,7 +1,7 @@
 #!/bin/bash
 version=$1
 if [ -z "$version" ]; then
-    version=1.0.1
+    version=1.0.2
 fi
 echo 'maven-build'
 cd ../structure-user-dependencies
