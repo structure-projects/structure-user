@@ -1,7 +1,7 @@
 package cn.structured.user.service.impl;
 
 import cn.structured.mybatis.plus.starter.base.BaseServiceImpl;
-import cn.structured.oauth.user.api.dto.role.BindingAuthorityDTO;
+import cn.structured.user.api.dto.role.BindingAuthorityDTO;
 import cn.structured.user.entity.Role;
 import cn.structured.user.entity.RoleAuthorityMapping;
 import cn.structured.user.mapper.RoleAuthorityMappingMapper;
@@ -54,6 +54,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
                 .collect(Collectors.toList());
     }
 
+    @Override
     public void saveRoleMenu(BindingAuthorityDTO bindingAuthorityDto) {
         authorityMappingMapper.delete(Wrappers.<RoleAuthorityMapping>lambdaQuery().eq(RoleAuthorityMapping::getRoleId, bindingAuthorityDto.getId()));
         //构建角色权限

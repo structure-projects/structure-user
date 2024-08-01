@@ -1,6 +1,6 @@
 package cn.structured.user.controller.assembler;
 
-import cn.structured.oauth.user.api.dto.user.UserDetailDTO;
+import cn.structured.user.api.dto.user.UserDetailDTO;
 import cn.structured.user.entity.User;
 import cn.structured.security.entity.StructureAuthUser;
 

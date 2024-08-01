@@ -20,7 +20,7 @@
 
     <properties>
         <revision>1.0.2</revision>
-        <structure.version>1.2.1.RELEASE</structure.version>
+        <structure.version>1.2.2</structure.version>
         <structure-oauth.version>1.0.1</structure-oauth.version>
     </properties>
 

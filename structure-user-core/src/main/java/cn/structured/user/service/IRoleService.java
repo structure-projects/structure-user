@@ -1,7 +1,7 @@
 package cn.structured.user.service;
 
 import cn.structured.mybatis.plus.starter.base.IBaseService;
-import cn.structured.oauth.user.api.dto.role.BindingAuthorityDTO;
+import cn.structured.user.api.dto.role.BindingAuthorityDTO;
 import cn.structured.user.entity.Role;
 
 import java.util.List;

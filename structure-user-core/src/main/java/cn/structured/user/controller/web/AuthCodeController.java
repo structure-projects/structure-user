@@ -2,8 +2,8 @@ package cn.structured.user.controller.web;
 
 import cn.structure.common.entity.ResResultVO;
 import cn.structure.common.utils.ResultUtilSimpleImpl;
-import cn.structured.oauth.user.api.dto.user.SendEmailCodeDTO;
-import cn.structured.oauth.user.api.dto.user.SendSmsCodeDTO;
+import cn.structured.user.api.dto.user.SendEmailCodeDTO;
+import cn.structured.user.api.dto.user.SendSmsCodeDTO;
 import cn.structured.user.service.IAuthCodeService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

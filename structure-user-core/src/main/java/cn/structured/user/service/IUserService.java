@@ -1,6 +1,11 @@
 package cn.structured.user.service;
 
 import cn.structured.mybatis.plus.starter.base.IBaseService;
+import cn.structured.user.api.dto.user.BindingPlatformUserIdDTO;
+import cn.structured.user.api.dto.user.RegisterPlatformUserDTO;
+import cn.structured.user.api.dto.user.RegisterUserDto;
+import cn.structured.user.api.dto.user.UserDetailDTO;
+import cn.structured.user.api.dto.user.UserInfoDTO;
 import cn.structured.user.entity.Role;
 import cn.structured.user.entity.User;
 

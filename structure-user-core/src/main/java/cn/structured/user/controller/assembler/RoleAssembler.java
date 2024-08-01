@@ -1,8 +1,8 @@
 package cn.structured.user.controller.assembler;
 
-import cn.structured.oauth.user.api.dto.OptionDTO;
-import cn.structured.oauth.user.api.dto.role.RoleDTO;
-import cn.structured.oauth.user.api.vo.RoleVO;
+import cn.structured.user.api.dto.OptionDTO;
+import cn.structured.user.api.dto.role.RoleDTO;
+import cn.structured.user.api.vo.RoleVO;
 import cn.structured.user.entity.Role;
 
 /**

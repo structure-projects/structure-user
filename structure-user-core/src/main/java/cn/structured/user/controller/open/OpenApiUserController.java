@@ -2,10 +2,10 @@ package cn.structured.user.controller.open;
 
 import cn.structure.common.entity.ResResultVO;
 import cn.structure.common.utils.ResultUtilSimpleImpl;
-import cn.structured.oauth.user.api.dto.user.AssigningRoleDTO;
-import cn.structured.oauth.user.api.dto.user.RegisterPlatformUserDTO;
-import cn.structured.oauth.user.api.dto.user.RestPasswordDTO;
-import cn.structured.oauth.user.api.dto.user.UserDetailDTO;
+import cn.structured.user.api.dto.user.AssigningRoleDTO;
+import cn.structured.user.api.dto.user.RegisterPlatformUserDTO;
+import cn.structured.user.api.dto.user.RestPasswordDTO;
+import cn.structured.user.api.dto.user.UserDetailDTO;
 import cn.structured.user.controller.assembler.UserAssembler;
 import cn.structured.user.entity.Role;
 import cn.structured.user.entity.User;

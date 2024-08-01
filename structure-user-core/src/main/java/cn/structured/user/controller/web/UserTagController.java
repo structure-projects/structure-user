@@ -2,8 +2,8 @@ package cn.structured.user.controller.web;
 
 import cn.structure.common.entity.ResResultVO;
 import cn.structure.common.utils.ResultUtilSimpleImpl;
-import cn.structured.oauth.user.api.dto.TagDTO;
-import cn.structured.oauth.user.api.dto.role.RoleDTO;
+import cn.structured.user.api.dto.TagDTO;
+import cn.structured.user.api.dto.role.RoleDTO;
 import cn.structured.user.entity.UserTag;
 import cn.structured.user.service.IUserTagService;
 import cn.structured.security.util.SecurityUtils;

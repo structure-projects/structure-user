@@ -1,7 +1,7 @@
 package cn.structured.user.service;
 
-import cn.structured.oauth.user.api.dto.user.SendEmailCodeDTO;
-import cn.structured.oauth.user.api.dto.user.SendSmsCodeDTO;
+import cn.structured.user.api.dto.user.SendEmailCodeDTO;
+import cn.structured.user.api.dto.user.SendSmsCodeDTO;
 
 /**
  * Code服务类
