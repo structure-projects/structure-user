@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -289,7 +290,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             return Lists.newArrayList();
         }
 
-        filterRole(roleIds);
+        roleIds = filterRole(roleIds);
         //如果没有角色则直接返回
         if (roleIds.isEmpty()) {
             return Lists.newArrayList();
@@ -314,7 +315,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
                 .map(UserRoleMapping::getRoleId)
                 .collect(Collectors.toSet());
 
-        filterRole(roleIds);
+        roleIds = filterRole(roleIds);
         if (roleIds.isEmpty()) {
             return Lists.newArrayList();
         }
@@ -363,12 +364,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
      *
      * @param roleIds 角色ID
      */
-    private void filterRole(Set<Long> roleIds) {
+    private Set<Long> filterRole(Set<Long> roleIds) {
         if (roleIds.isEmpty()) {
-            return;
+            return new HashSet<>();
         }
         //过滤禁用的角色
-        roleIds = roleMapper.selectList(Wrappers.<Role>lambdaQuery()
+        return roleMapper.selectList(Wrappers.<Role>lambdaQuery()
                         .in(Role::getId, roleIds)
                         .eq(Role::getEnabled, true)
                         .select(Role::getId, Role::getCode))

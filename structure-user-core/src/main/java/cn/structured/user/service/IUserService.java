@@ -126,7 +126,7 @@ public interface IUserService extends IBaseService<User> {
     /**
      * 查询当前用户角色
      *
-     * @return
+     * @return List<Role>
      */
     List<Role> getUserRole(Long userId);
 
@@ -143,7 +143,7 @@ public interface IUserService extends IBaseService<User> {
      * 通过用户ID查看用户详情
      *
      * @param userId 用户ID
-     * @return
+     * @return UserDetailDTO
      */
     UserDetailDTO getUserDetailByUserId(Long userId);
 

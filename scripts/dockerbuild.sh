@@ -4,12 +4,10 @@ if [ -z "$version" ]; then
     version=1.0.2
 fi
 echo 'docker-build'
-cd ../structure-user-boot
-mvn clean package -Dmaven.test.skip=true -Drevision=$version
-cd ../structure-user-cloud
-mvn clean package -Dmaven.test.skip=true -Drevision=$version
-cd ../
-docker build -t registry.cn-hangzhou.aliyuncs.com/structured/structured-user-center:$version .
+mvn clean package -f ../structure-user-boot/pom.xml -Dmaven.test.skip=true -Drevision=$version
+mvn clean package -f ../structure-user-cloud/pom.xml -Dmaven.test.skip=true -Drevision=$version
+cd ..
+sudo docker build -t registry.cn-hangzhou.aliyuncs.com/structured/structured-user-center:$version .
 
 
 

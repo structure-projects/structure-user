@@ -44,8 +44,7 @@ public class UserTagController {
 
     @ApiOperation(value = "删除用户标签")
     @DeleteMapping(value = "/{tagId}")
-    public ResResultVO<Void> userDelete(@RequestBody @Validated RoleDTO roleDto,
-                                        @ApiParam(value = "标签ID", example = "1645717015337684992")
+    public ResResultVO<Void> userDelete(@ApiParam(value = "标签ID", example = "1645717015337684992")
                                         @PathVariable Long tagId) {
         Long userId = SecurityUtils.getUserId();
         userTagService.remove(Wrappers.<UserTag>lambdaQuery()
