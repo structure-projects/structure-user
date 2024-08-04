@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Import;
  * @since JDK1.8
  */
 @Import(SpringUtil.class)
-@ComponentScan(basePackages = "cn.structured.oauth.user.**")
+@ComponentScan(basePackages = "cn.structured.user.**")
 public class AutoUserConfiguration {
 }

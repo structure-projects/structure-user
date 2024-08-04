@@ -17,7 +17,6 @@
     <packaging>jar</packaging>
     <description>用户核心</description>
     <properties>
-        <revision>1.0.1</revision>
         <structure.version>1.2.1.RELEASE</structure.version>
         <spring-boot.version>2.7.14</spring-boot.version>
         <mysql.version>8.0.13</mysql.version>

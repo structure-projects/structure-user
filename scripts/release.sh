@@ -6,5 +6,4 @@ if [ -z "$version" ]; then
     version=1.0.2
 fi
 cd ../
-cd structure-user-dependencies
-mvn clean deploy -P release,oss -Dmaven.test.skip=true  -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Drevision=$version
+mvn clean deploy -P release,oss -f ../structure-user-dependencies/pom.xml -Dmaven.test.skip=true  -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Drevision=$version

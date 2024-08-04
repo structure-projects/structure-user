@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@MapperScan(basePackages = "cn.structured.oauth.user.mapper")
+@MapperScan(basePackages = "cn.structured.user.mapper")
 public class MyBatisConfiguration {
 
     /**

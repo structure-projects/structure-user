@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 短信服务配置
+ * @author chuck
  */
 @Data
 @Configuration
